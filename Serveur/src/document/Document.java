@@ -1,5 +1,7 @@
 package document;
 
+import abonne.Abonne;
+
 public interface Document {
 	int numero();
 

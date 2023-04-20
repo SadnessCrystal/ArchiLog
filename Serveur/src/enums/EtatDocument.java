@@ -1,4 +1,4 @@
-package document;
+package enums;
 
 public enum EtatDocument {
 	DISPONIBLE,

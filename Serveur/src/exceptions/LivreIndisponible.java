@@ -1,4 +1,4 @@
-package document;
+package exceptions;
 
 public class LivreIndisponible extends RuntimeException {
 
