@@ -1,6 +1,7 @@
 package abonne;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 public class Abonne {
 	private static int ID_COMPTEUR = 1;
@@ -13,6 +14,10 @@ public class Abonne {
 		this.nom = nom;
 		this.dateNaissance = dateNaissance;
 	}
+	
+	public int getId() {
+		return this.id;
+	}
 
 	public String getNom() {
 		return this.nom;
@@ -20,6 +25,10 @@ public class Abonne {
 
 	public LocalDate getDateNaissance() {
 		return dateNaissance;
+	}
+	
+	public int getAge() {
+		return Period.between(LocalDate.now(), this.getDateNaissance()).getYears();
 	}
 
 }

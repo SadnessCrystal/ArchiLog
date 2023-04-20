@@ -1,23 +1,18 @@
 package document;
 
-import java.time.LocalDate;
-import java.time.Period;
-
 import abonne.Abonne;
 
 public class DVD extends AbstrDocument {
-	private boolean autoriseMoins16Ans;
+	private boolean interditMoins16Ans;
 	
 	public DVD(String titre, boolean autoriseMoins16Ans) {
 		super(titre);
-		this.autoriseMoins16Ans = autoriseMoins16Ans;
+		this.interditMoins16Ans = autoriseMoins16Ans;
 	}
 	
 	private boolean verificationPlus16Ans(Abonne ab) {
-		LocalDate aujourdhui = LocalDate.now();
-		int age = Period.between(aujourdhui, ab.getDateNaissance()).getYears();
 		
-		return !this.autoriseMoins16Ans || age >= 16;
+		return !this.interditMoins16Ans || 16 <= ab.getAge();
 	}
 	
 	@Override
