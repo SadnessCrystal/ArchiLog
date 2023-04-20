@@ -1,10 +1,10 @@
 package document;
 
 public class DVD extends AbstrDocument {
-	private boolean SeizeAnsPlus;
+	private boolean autoriseMoins16Ans;
 	
-	public DVD(String titre, boolean SeizeAnsPlus) {
+	public DVD(String titre, boolean autoriseMoins16Ans) {
 		super(titre);
-		this.SeizeAnsPlus = SeizeAnsPlus;
+		this.autoriseMoins16Ans = autoriseMoins16Ans;
 	}
 }
