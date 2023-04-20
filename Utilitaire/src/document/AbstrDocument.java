@@ -45,10 +45,14 @@ public class AbstrDocument implements Document {
 		else
 			return null;
 	}
+	
+	public boolean reservable(Abonne ab) {
+		return this.etat == EtatDocument.DISPONIBLE;
+	}
 
 	@Override
 	public void reservation(Abonne ab) {
-		if (this.etat == EtatDocument.DISPONIBLE) {
+		if (reservable(ab)) {
 			this.abonne = ab;
 			this.dateReservation = LocalDateTime.now();
 			this.etat = EtatDocument.RESERVE;
@@ -57,10 +61,14 @@ public class AbstrDocument implements Document {
 			throw new LivreIndisponible("Livre déjà réservé/emprunté par " + ab.getNom());
 		}
 	}
+	
+	public boolean empruntable(Abonne ab) {
+		return this.etat== EtatDocument.DISPONIBLE || (this.etat==EtatDocument.RESERVE && ab==this.abonne);
+	}
 
 	@Override
 	public void emprunt(Abonne ab) {
-		if (this.etat== EtatDocument.DISPONIBLE || (this.etat==EtatDocument.RESERVE && ab==this.abonne)) {
+		if (empruntable(ab)) {
 			this.etat = EtatDocument.EMPRUNTE;
 			this.abonne = ab;
 		}
