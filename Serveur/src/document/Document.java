@@ -1,21 +1,87 @@
 package document;
 
-import abonne.Abonne;
+import java.time.LocalDateTime;
 
-public interface Document {
-	int numero();
+import abonne.IAbonne;
+import enums.EtatDocument;
+import exceptions.LivreIndisponibleException;
 
-	// return null si pas emprunté ou pas réservé
-	Abonne empruntePar(); // Abonné qui a emprunté ce document
+public class Document implements IDocument {
+	private static int idCompteur = 1;
 
-	Abonne reservePar(); // Abonné qui a réservé ce document
-	// precondition ni réservé ni emprunté
+	private int id;
+	private String titre;
+	private EtatDocument etat;
+	private IAbonne abonne;
+	private LocalDateTime dateReservation; // Piège à con
 
-	void reservation(Abonne ab);
+	public Document(String titre) {
+		this.id = Document.idCompteur++;
+		this.titre = titre;
+		this.etat = EtatDocument.DISPONIBLE;
+	}
 
-	// precondition libre ou réservé par l’abonné qui vient emprunter
-	void emprunt(Abonne ab);
+	public String getTitre() {
+		return titre;
+	}
 
-	// retour d’un document ou annulation d‘une réservation
-	void retour();
+	public EtatDocument getEtat() {
+		return etat;
+	}
+
+	@Override
+	public int numero() {
+		return this.id;
+	}
+
+	@Override
+	public IAbonne empruntePar() {
+		if (etat == EtatDocument.EMPRUNTE)
+			return this.abonne;
+		else
+			return null;
+	}
+
+	@Override
+	public IAbonne reservePar() {
+		if (etat == EtatDocument.RESERVE)
+			return this.abonne;
+		else
+			return null;
+	}
+
+	public boolean reservable(IAbonne ab) {
+		return this.etat == EtatDocument.DISPONIBLE;
+	}
+
+	@Override
+	public void reservation(IAbonne ab) {
+		if (reservable(ab)) {
+			this.abonne = ab;
+			this.dateReservation = LocalDateTime.now();
+			this.etat = EtatDocument.RESERVE;
+		} else {
+			throw new LivreIndisponibleException("Livre déjà réservé/emprunté par " + ab.getNom());
+		}
+	}
+
+	public boolean empruntable(IAbonne ab) {
+		return this.etat == EtatDocument.DISPONIBLE || (this.etat == EtatDocument.RESERVE && ab == this.abonne);
+	}
+
+	@Override
+	public void emprunt(IAbonne ab) {
+		if (empruntable(ab)) {
+			this.etat = EtatDocument.EMPRUNTE;
+			this.abonne = ab;
+		} else {
+			throw new LivreIndisponibleException("Livre déjà réservé/emprunté par " + ab.getNom());
+		}
+	}
+
+	@Override
+	public void retour() {
+		this.abonne = null;
+		this.etat = EtatDocument.DISPONIBLE;
+	}
 }

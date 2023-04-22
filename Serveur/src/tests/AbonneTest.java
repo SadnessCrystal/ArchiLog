@@ -26,5 +26,6 @@ public class AbonneTest {
 		assertEquals(this.dateNaissance, this.ab.getDateNaissance());
 		assertEquals(this.nomAb, ab.getNom());
 		assertEquals(1, ab.getId());
+		assertEquals(62, this.ab.getAge());
 	}
 }

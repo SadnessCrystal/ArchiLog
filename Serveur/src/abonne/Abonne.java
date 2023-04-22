@@ -3,14 +3,14 @@ package abonne;
 import java.time.LocalDate;
 import java.time.Period;
 
-public class Abonne {
-	private static int ID_COMPTEUR = 1;
+public class Abonne implements IAbonne {
+	private static int idCompteur = 1;
 	private int id;
 	private String nom;
 	private LocalDate dateNaissance;
 
 	public Abonne(String nom, LocalDate dateNaissance) {
-		this.id = Abonne.ID_COMPTEUR++;
+		this.id = Abonne.idCompteur++;
 		this.nom = nom;
 		this.dateNaissance = dateNaissance;
 	}
@@ -28,7 +28,7 @@ public class Abonne {
 	}
 	
 	public int getAge() {
-		return Period.between(LocalDate.now(), this.getDateNaissance()).getYears();
+		return Period.between(this.getDateNaissance(), LocalDate.now()).getYears();
 	}
 
 }
