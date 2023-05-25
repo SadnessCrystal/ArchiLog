@@ -1,7 +1,7 @@
 package dvd;
 
-import document.IDocument;
+import document.Document;
 
-public interface IDVD extends IDocument {
+public interface IDVD extends Document {
 	boolean getInterditMoins16Ans();
 }

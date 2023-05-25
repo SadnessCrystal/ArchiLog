@@ -1,9 +1,9 @@
 package dvd;
 
 import abonne.IAbonne;
-import document.Document;
+import document.Abstract_Document;
 
-public class DVD extends Document implements IDVD {
+public class DVD extends Abstract_Document implements IDVD {
 	private boolean interditMoins16Ans;
 	private IVerificationAge va;
 	
