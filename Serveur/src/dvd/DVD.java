@@ -7,9 +7,9 @@ public class DVD extends Abstract_Document implements IDVD {
 	private boolean interditMoins16Ans;
 	private IVerificationAge va;
 	
-	public DVD(String titre, boolean autoriseMoins16Ans, IVerificationAge va) {
+	public DVD(String titre, boolean interditMoins16Ans, IVerificationAge va) {
 		super(titre);
-		this.interditMoins16Ans = autoriseMoins16Ans;
+		this.interditMoins16Ans = interditMoins16Ans;
 		this.va = va;
 	}
 	
@@ -25,6 +25,6 @@ public class DVD extends Abstract_Document implements IDVD {
 	
 	@Override
 	public boolean reservable(IAbonne ab) {
-		return reservable(ab) && va.verificationPlus16Ans(this, ab);
+		return super.reservable(ab) && va.verificationPlus16Ans(this, ab);
 	}
 }

@@ -1,8 +1,11 @@
 package document;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 
 import abonne.IAbonne;
+import banissement.IBanissement;
 import enums.EtatDocument;
 import exceptions.LivreIndisponibleException;
 
@@ -13,8 +16,10 @@ public abstract class Abstract_Document implements Document {
 	private String titre;
 	private EtatDocument etat;
 	private IAbonne abonne;
+	
 	@SuppressWarnings("unused")
-	private LocalDateTime dateReservation; // Piège à con
+	private LocalDateTime dateReservation; // Piège à con : penser à supprimer si 2h
+	private LocalDate dateEmprunt;
 
 	public Abstract_Document(String titre) {
 		this.id = Abstract_Document.idCompteur++;
@@ -25,6 +30,18 @@ public abstract class Abstract_Document implements Document {
 	public String getTitre() {
 		return titre;
 	}
+	
+	/*
+	
+	public boolean estEmprunte() {
+		return this.dateEmprunt != null;
+	}
+	
+	public boolean estReserve() {
+		return this.dateReservation != null;
+	}
+	
+	*/
 
 	public EtatDocument getEtat() {
 		return etat;
@@ -75,6 +92,7 @@ public abstract class Abstract_Document implements Document {
 		if (empruntable(ab)) {
 			this.etat = EtatDocument.EMPRUNTE;
 			this.abonne = ab;
+			this.dateEmprunt = LocalDate.now();
 		} else {
 			throw new LivreIndisponibleException("Livre déjà réservé/emprunté par " + ab.getNom());
 		}
@@ -82,7 +100,8 @@ public abstract class Abstract_Document implements Document {
 
 	@Override
 	public void retour() {
-		this.abonne = null;
 		this.etat = EtatDocument.DISPONIBLE;
+		this.dateEmprunt = null;
+		this.abonne = null;
 	}
 }

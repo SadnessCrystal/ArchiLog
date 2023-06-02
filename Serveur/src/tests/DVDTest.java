@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import abonne.Abonne;
 import abonne.IAbonne;
 import dvd.DVD;
+import dvd.IDVD;
 import dvd.IVerificationAge;
 import dvd.VerificationAge;
 import enums.EtatDocument;
@@ -53,14 +54,58 @@ public class DVDTest {
 		assertNotEquals(this.dvdToutAge.numero(), this.dvdPlus16Ans.numero());
 	}
 	
+	
 	@Test
-	public void testEmpruntDVDToutPublic() {
+	public void testEmpruntDVDGeneral() {
 		assertNull(this.dvdToutAge.empruntePar());
-
-		assertDoesNotThrow(() -> this.dvdToutAge.emprunt(abMoins16Ans));
+		assertDoesNotThrow(() -> this.dvdToutAge.emprunt(abMajeur));
+		assertEquals(this.abMajeur, this.dvdToutAge.empruntePar());
 		assertEquals(EtatDocument.EMPRUNTE, this.dvdToutAge.getEtat());
-		assertEquals(this.abMoins16Ans, this.dvdToutAge.empruntePar());
 		assertThrows(LivreIndisponibleException.class, () -> this.dvdToutAge.emprunt(abMajeur));
+		assertDoesNotThrow(() -> this.dvdToutAge.retour());
+		assertNull(this.dvdPlus16Ans.empruntePar());
+		assertEquals(EtatDocument.DISPONIBLE, this.dvdToutAge.getEtat());
+		assertDoesNotThrow(() -> this.dvdToutAge.emprunt(abMajeur));
 	}
 	
+	@Test
+	public void testEmpruntDVDToutPublic() {
+		assertDoesNotThrow(() -> this.dvdToutAge.emprunt(abMoins16Ans));
+		this.dvdToutAge.retour();
+		assertDoesNotThrow(() -> this.dvdToutAge.emprunt(abMajeur));
+	}
+	
+	@Test
+	public void testEmpruntDVDAdulte() {
+		assertThrows(LivreIndisponibleException.class, () -> this.dvdPlus16Ans.emprunt(abMoins16Ans));
+		assertDoesNotThrow(() -> this.dvdPlus16Ans.emprunt(abMajeur));
+	}
+	
+	@Test
+	public void testReservationDVDGeneral() {
+		assertNull(this.dvdToutAge.reservePar());
+		assertDoesNotThrow(() -> this.dvdToutAge.reservation(abMajeur));
+		assertEquals(EtatDocument.RESERVE, this.dvdToutAge.getEtat());
+		assertEquals(this.abMajeur, this.dvdToutAge.reservePar());
+		assertThrows(LivreIndisponibleException.class, () -> this.dvdToutAge.reservation(abMoins16Ans));
+		assertThrows(LivreIndisponibleException.class, () -> this.dvdToutAge.emprunt(abMoins16Ans));
+		assertDoesNotThrow(() -> this.dvdToutAge.emprunt(abMajeur));
+		this.dvdToutAge.retour();
+		assertDoesNotThrow(() -> this.dvdToutAge.emprunt(abMoins16Ans));
+	}
+	
+	@Test
+	public void testReservationDVDToutPublic() {
+		assertDoesNotThrow(() -> this.dvdToutAge.reservation(abMoins16Ans));
+		this.dvdToutAge.retour();
+		assertDoesNotThrow(() -> this.dvdToutAge.emprunt(abMajeur));
+	}
+	
+	
+	@Test
+	public void testReservationDVDAdulte() {
+		assertThrows(LivreIndisponibleException.class, () -> this.dvdPlus16Ans.emprunt(abMoins16Ans));
+		assertNull(this.dvdPlus16Ans.empruntePar());
+		assertDoesNotThrow(() -> this.dvdPlus16Ans.emprunt(abMajeur));
+	}
 }
