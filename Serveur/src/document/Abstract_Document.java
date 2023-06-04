@@ -2,49 +2,53 @@ package document;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 
 import abonne.IAbonne;
-import banissement.IBanissement;
-import enums.EtatDocument;
 import exceptions.LivreIndisponibleException;
 
 public abstract class Abstract_Document implements Document {
-	private static int idCompteur = 1;
-
 	private int id;
 	private String titre;
 	private EtatDocument etat;
 	private IAbonne abonne;
-	
-	@SuppressWarnings("unused")
-	private LocalDateTime dateReservation; // Piège à con : penser à supprimer si 2h
-	private LocalDate dateEmprunt;
+	private LocalDateTime dateReservation; 	// Piège à con : penser à supprimer si 2h
+	private LocalDate dateEmprunt;			// Penser à supprimer
 
-	public Abstract_Document(String titre) {
-		this.id = Abstract_Document.idCompteur++;
+	public Abstract_Document(int id, String titre) {
+		this(id, titre, null, null, null);
+	}
+	
+	public Abstract_Document(int id, String titre, LocalDateTime dateReservation, LocalDate dateEmprunt, IAbonne ab) {
+		assert(dateReservation == null || dateEmprunt == null);
+		
+		this.id = id;
 		this.titre = titre;
-		this.etat = EtatDocument.DISPONIBLE;
+		
+		if (dateReservation != null)
+			this.etat = EtatDocument.RESERVE;
+		else if (dateEmprunt != null)
+			this.etat = EtatDocument.EMPRUNTE;
+		else
+			this.etat = EtatDocument.DISPONIBLE;
+		
+		this.abonne = ab;
+		
 	}
 
 	public String getTitre() {
 		return titre;
 	}
 	
-	/*
-	
 	public boolean estEmprunte() {
-		return this.dateEmprunt != null;
+		return this.etat == EtatDocument.EMPRUNTE;
 	}
 	
 	public boolean estReserve() {
-		return this.dateReservation != null;
+		return this.etat == EtatDocument.RESERVE;
 	}
 	
-	*/
-
-	public EtatDocument getEtat() {
-		return etat;
+	public boolean estDisponible() {
+		return this.etat == EtatDocument.DISPONIBLE;
 	}
 
 	@Override
@@ -92,7 +96,7 @@ public abstract class Abstract_Document implements Document {
 		if (empruntable(ab)) {
 			this.etat = EtatDocument.EMPRUNTE;
 			this.abonne = ab;
-			this.dateEmprunt = LocalDate.now();
+			this.dateEmprunt = LocalDate.now(); //Date.valueOf(LocalDate.now());
 		} else {
 			throw new LivreIndisponibleException("Livre déjà réservé/emprunté par " + ab.getNom());
 		}

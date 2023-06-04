@@ -12,13 +12,15 @@ import abonne.Abonne;
 public class AbonneTest {
 	private Abonne ab;
 	private String nomAb;
+	private String prenomAb;
 	private LocalDate dateNaissance;
 	
 	@BeforeEach
 	public void init() {
-		this.nomAb = "Manu Macaron";
+		this.nomAb = "Macaron";
+		this.prenomAb = "Manu";
 		this.dateNaissance = LocalDate.of(1960, 12, 12);
-		this.ab = new Abonne(this.nomAb, this.dateNaissance);
+		this.ab = new Abonne(1, this.nomAb, this.prenomAb, this.dateNaissance);
 	}
 	
 	@Test

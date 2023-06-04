@@ -25,7 +25,7 @@ class BanissementTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		this.b = new Banissement();
-		this.a = new Abonne("Kevin", LocalDate.)
+		//this.a = new Abonne("Kevin", LocalDate.)
 	}
 
 	@Test

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.Period;
 
 import abonne.IAbonne;
-import document.Document;
 
 public class Banissement implements IBanissement {
 	

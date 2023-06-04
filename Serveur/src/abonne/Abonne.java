@@ -3,22 +3,26 @@ package abonne;
 import java.time.LocalDate;
 import java.time.Period;
 
-import banissement.IBanissement;
-
 public class Abonne implements IAbonne {
-	private static int idCompteur = 1;
 	private int id;
 	private String nom;
-	
+	private String prenom;
+
 	private LocalDate dateNaissance;
 	private LocalDate dateBanissement;
 
-	public Abonne(String nom, LocalDate dateNaissance) {
-		this.id = Abonne.idCompteur++;
-		this.nom = nom;
-		this.dateNaissance = dateNaissance;
+	public Abonne(int id, String nom, String prenom, LocalDate dateNaissance) {
+		this(id, nom, prenom, dateNaissance, null);
 	}
-	
+
+	public Abonne(int id, String nom, String prenom, LocalDate dateNaissance, LocalDate dateBanissement) {
+		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.dateNaissance = dateNaissance;
+		this.dateBanissement = dateBanissement;
+	}
+
 	public int getId() {
 		return this.id;
 	}
@@ -27,26 +31,28 @@ public class Abonne implements IAbonne {
 		return this.nom;
 	}
 
+	public String getPrenom() {
+		return this.prenom;
+	}
+
 	public LocalDate getDateNaissance() {
 		return dateNaissance;
 	}
-	
+
 	public int getAge() {
 		return Period.between(this.getDateNaissance(), LocalDate.now()).getYears();
 	}
-	
-	/*
+
 	public boolean estBanni() {
 		return this.dateBanissement != null;
 	}
-	
+
 	public LocalDate getDateBannissement() {
 		return this.dateBanissement;
 	}
-	
+
 	public void bannir() {
 		this.dateBanissement = LocalDate.now();
 	}
-	*/
 
 }

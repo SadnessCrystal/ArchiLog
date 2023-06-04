@@ -9,8 +9,8 @@ public interface Document {
 	IAbonne empruntePar(); // Abonné qui a emprunté ce document
 
 	IAbonne reservePar(); // Abonné qui a réservé ce document
+	
 	// precondition ni réservé ni emprunté
-
 	void reservation(IAbonne ab);
 
 	// precondition libre ou réservé par l’abonné qui vient emprunter

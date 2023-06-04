@@ -3,9 +3,11 @@ package dvd;
 import abonne.IAbonne;
 
 public class VerificationAge implements IVerificationAge {
+	
+	private static final int AGE_LIMITE = 16;
 
 	@Override
-	public boolean verificationPlus16Ans(IDVD dvd, IAbonne ab) {
-		return !dvd.getInterditMoins16Ans() || 16 <= ab.getAge();
+	public boolean verificationAdulte(IDVD dvd, IAbonne ab) {
+		return !dvd.estPourAdulte() || AGE_LIMITE <= ab.getAge();
 	}
 }
