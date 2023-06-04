@@ -24,7 +24,13 @@ public interface IInteractionBDD {
 
 	Map<Integer, Document> getDocuments(Connection c) throws SQLException;
 	
-	String getCatalogue(Connection c);
+	String getCatalogue(Connection c) throws SQLException;
 
 	boolean commit(Connection c, IAbonne ab, Document d) throws SQLException;
+
+	void reserver(Connection c, IAbonne ab, Document d) throws SQLException;
+
+	void emprunter(Connection c, IAbonne ab, Document d) throws SQLException;
+
+	void rendre(Connection c, Document d) throws SQLException;
 }

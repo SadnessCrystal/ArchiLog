@@ -75,9 +75,35 @@ public class InteractionBDD implements IInteractionBDD {
 	public boolean commit(Connection c, IAbonne ab, Document d) throws SQLException {
 		return false;
 	}
+	
+	@Override
+	public void emprunter(Connection c, IAbonne ab, Document d) throws SQLException {
+		String sql = "UPDATE emprunter SET date = " + LocalDate.now().toString() + " WHERE id = " + d.numero() +";" +
+				"UPDATE emprunter SET id_1 = " + ab.getId() + "WHERE id = " + d.numero() + ";";
+		Statement statement = c.createStatement();
+		statement.executeUpdate(sql);
+	}
+	
+	@Override
+	public void reserver(Connection c, IAbonne ab, Document d) throws SQLException {
+		String sql = "UPDATE reserveur SET heureReservation = " + LocalDateTime.now().toString() + " WHERE id = " + d.numero() +";" +
+		"UPDATE reserveur SET id_1 = " + ab.getId() + "WHERE id = " + d.numero() + ";";
+		Statement statement = c.createStatement();
+		statement.executeUpdate(sql);
+	}
+	
+	@Override
+	public void rendre(Connection c, Document d) throws SQLException{
+		String sql = "UPDATE reserveur SET heureReservation = null WHERE id = " + d.numero() +";" +
+		"UPDATE reserveur SET id_1 = null WHERE id = " + d.numero() + ";" +
+		"UPDATE emprunteur SET heureReservation = null WHERE id = " + d.numero() +";" +
+		"UPDATE emprunteur SET id_1 = null WHERE id = " + d.numero() + ";";
+		Statement statement = c.createStatement();
+		statement.executeUpdate(sql);
+	}
 
 	@Override
-	public String getCatalogue(Connection c) {
+	public String getCatalogue(Connection c) throws SQLException {
 		String sql = "SELECT * from document;";
 		Statement statement = c.createStatement();
 		ResultSet resultSet = statement.executeQuery(sql);
